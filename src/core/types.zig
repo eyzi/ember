@@ -39,10 +39,17 @@ pub const EmberMeta = struct {
 
 // Object
 
+pub const EmberFormat = enum {
+    BMP,
+    WAV,
+    OBJ,
+};
+
 pub const EmberObject = union(enum) {
     image: EmberImage,
     sound: EmberSound,
     @"3d": Ember3d,
+    unknown: null,
 };
 
 pub const EmberImage = struct {
