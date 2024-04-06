@@ -7,16 +7,18 @@ pub const EmberFormatSequence = union(enum) {
 };
 
 pub const EmberFormatBytes = struct {
-    length: usize,
+    start: union(enum) {
+        previous,
+        from_key: [:0]const u8,
+    } = .previous,
+    length: union(enum) {
+        value: usize,
+        from_key: [:0]const u8,
+    },
     name: [:0]const u8,
-    kind: struct {
-        id: enum {
-            bytes,
-            int,
-        } = .bytes,
-        signedness: std.builtin.Signedness = .unsigned,
-        endian: std.builtin.Endian = .Big,
-    } = .{},
+    type: type = []u8,
+    signedness: std.builtin.Signedness = .unsigned,
+    endian: std.builtin.Endian = .Big,
 };
 
 // Meta
@@ -28,37 +30,25 @@ pub const EmberMetaInt = struct {
 };
 
 pub const EmberMetaAttribute = union(enum) {
+    u16: u16,
+    u32: u32,
+    i32: i32,
+    usize: usize,
     bytes: []u8,
-    int: usize,
+    unknown,
 };
 
-pub const EmberMeta = struct {
-    bytes: []u8,
-    attributes: std.StringHashMap(EmberMetaAttribute),
-};
+pub const EmberMetaAttributes = std.StringHashMap(EmberMetaAttribute);
 
 // Object
-
-pub const EmberFormat = enum {
-    BMP,
-    WAV,
-    OBJ,
-};
-
-pub const EmberObject = union(enum) {
-    image: EmberImage,
-    sound: EmberSound,
-    @"3d": Ember3d,
-    unknown: null,
-};
 
 pub const EmberImage = struct {
     format: enum {
         BMP,
     },
-    signature: []u8,
-    filesize: usize,
-    data_offset: usize,
+    width: u32,
+    height: u32,
+    data: []u8,
 };
 
 pub const EmberSound = struct {
