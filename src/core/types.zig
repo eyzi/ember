@@ -40,6 +40,11 @@ pub const EmberMeta = struct {
     file: [:0]const u8,
     bytes: []u8,
     // attributes: EmberMetaAttributes,
+
+    pub fn deallocate(self: EmberMeta, allocator: std.mem.Allocator) void {
+        // self.meta.attributes.deinit();
+        allocator.free(self.bytes);
+    }
 };
 
 pub const EmberMetaAttribute = union(enum) {
@@ -63,16 +68,26 @@ pub const EmberImage = struct {
     data: []u8,
 
     pub fn deallocate(self: EmberImage, allocator: std.mem.Allocator) void {
-        // self.meta.attributes.deinit();
-        allocator.free(self.meta.bytes);
+        self.meta.deallocate(allocator);
         allocator.free(self.data);
     }
 };
 
 pub const EmberSound = struct {
+    meta: EmberMeta,
     format: EmberSoundFormat,
+    n_channel: u16,
+    sample_rate: u32,
+    bit_depth: u16,
+    data: []u8,
+
+    pub fn deallocate(self: EmberSound, allocator: std.mem.Allocator) void {
+        self.meta.deallocate(allocator);
+        allocator.free(self.data);
+    }
 };
 
 pub const Ember3d = struct {
+    meta: EmberMeta,
     format: Ember3dFormat,
 };
