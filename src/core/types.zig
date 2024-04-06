@@ -36,6 +36,11 @@ pub const Ember3dFormat = enum {
 };
 
 // Meta
+pub const EmberMeta = struct {
+    file: [:0]const u8,
+    bytes: []u8,
+    // attributes: EmberMetaAttributes,
+};
 
 pub const EmberMetaAttribute = union(enum) {
     u16: u16,
@@ -51,12 +56,15 @@ pub const EmberMetaAttributes = std.StringHashMap(EmberMetaAttribute);
 // Object
 
 pub const EmberImage = struct {
+    meta: EmberMeta,
     format: EmberImageFormat,
     width: u32,
     height: u32,
     data: []u8,
 
     pub fn deallocate(self: EmberImage, allocator: std.mem.Allocator) void {
+        // self.meta.attributes.deinit();
+        allocator.free(self.meta.bytes);
         allocator.free(self.data);
     }
 };
