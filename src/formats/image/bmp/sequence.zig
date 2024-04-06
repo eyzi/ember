@@ -1,12 +1,6 @@
-const std = @import("std");
 const EmberFormatSequence = @import("../../../core/types.zig").EmberFormatSequence;
-const EmberMetaAttributes = @import("../../../core/types.zig").EmberMetaAttributes;
-const EmberImage = @import("../../../core/types.zig").EmberImage;
-const parser = @import("../../../core/parser.zig");
 
-pub const signature: [:0]const u8 = "BM";
-
-pub const ember_format = EmberFormatSequence{
+pub const sequence = EmberFormatSequence{
     .bytes = &.{
         .{
             .length = .{ .value = 2 },
@@ -114,12 +108,3 @@ pub const ember_format = EmberFormatSequence{
         },
     },
 };
-
-pub fn parse_ember_attributes(attributes: EmberMetaAttributes) !EmberImage {
-    return EmberImage{
-        .format = .BMP,
-        .width = attributes.get("width").?.u32,
-        .height = @as(u32, @intCast(try std.math.absInt(attributes.get("height").?.i32))),
-        .data = attributes.get("data").?.bytes,
-    };
-}

@@ -1,1 +1,1 @@
-pub const bmp = @import("./bmp/main.zig");
+pub const bmp = @import("./bmp/_.zig");
