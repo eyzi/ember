@@ -49,12 +49,10 @@ pub const EmberImage = struct {
     format: EmberImageFormat,
     width: u32,
     height: u32,
-    data: []u8,
     pixels: []EmberImagePixel,
 
     pub fn deallocate(self: EmberImage, allocator: std.mem.Allocator) void {
         self.meta.deallocate(allocator);
-        allocator.free(self.data);
         allocator.free(self.pixels);
     }
 };
@@ -66,20 +64,28 @@ pub const EmberSound = struct {
     sample_rate: u32,
     bit_depth: u16,
     data_size: usize,
-    data: []u8,
+    samples: []u8,
 
     pub fn deallocate(self: EmberSound, allocator: std.mem.Allocator) void {
         self.meta.deallocate(allocator);
-        allocator.free(self.data);
+        allocator.free(self.samples);
     }
 };
 
 pub const Ember3d = struct {
     meta: EmberMeta,
     format: Ember3dFormat,
+    vertices: []@Vector(3, f32),
+    uvs: []@Vector(2, f32),
+    normals: []@Vector(3, f32),
+    indices: []@Vector(3, u32),
 
-    pub fn deallocate(self: EmberSound, allocator: std.mem.Allocator) void {
+    pub fn deallocate(self: Ember3d, allocator: std.mem.Allocator) void {
         self.meta.deallocate(allocator);
+        allocator.free(self.vertices);
+        allocator.free(self.uvs);
+        allocator.free(self.normals);
+        allocator.free(self.indices);
     }
 };
 

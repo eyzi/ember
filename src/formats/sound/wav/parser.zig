@@ -15,6 +15,6 @@ pub fn parser(bytes: []u8, allocator: std.mem.Allocator) !EmberSound {
         .sample_rate = attributes.get("sample-rate").?.u32,
         .bit_depth = attributes.get("bits-per-sample").?.u16,
         .data_size = attributes.get("data-size").?.usize,
-        .data = try allocator.dupe(u8, attributes.get("data").?.bytes),
+        .samples = try allocator.dupe(u8, attributes.get("data").?.bytes),
     };
 }

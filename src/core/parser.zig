@@ -14,6 +14,9 @@ const bmp_parser = @import("../formats/image/bmp/parser.zig").parser;
 // sound parsers
 const wav_parser = @import("../formats/sound/wav/parser.zig").parser;
 
+// 3d parsers
+const obj_parser = @import("../formats/3d/obj/parser.zig").parser;
+
 pub fn parse_object(format: EmberFormat, bytes: []u8, allocator: std.mem.Allocator) !EmberObject {
     return switch (format) {
         .image => |image_format| EmberObject{ .image = try parse_image(image_format, bytes, allocator) },
@@ -24,22 +27,18 @@ pub fn parse_object(format: EmberFormat, bytes: []u8, allocator: std.mem.Allocat
 
 pub fn parse_image(format: EmberImageFormat, bytes: []u8, allocator: std.mem.Allocator) !EmberImage {
     return switch (format) {
-        .BMP => bmp_parser(bytes, allocator),
+        .BMP => try bmp_parser(bytes, allocator),
     };
 }
 
 pub fn parse_sound(format: EmberSoundFormat, bytes: []u8, allocator: std.mem.Allocator) !EmberSound {
     return switch (format) {
-        .WAV => wav_parser(bytes, allocator),
+        .WAV => try wav_parser(bytes, allocator),
     };
 }
 
 pub fn parse_3d(format: Ember3dFormat, bytes: []u8, allocator: std.mem.Allocator) !Ember3d {
-    _ = allocator;
-    return .{
-        .meta = .{
-            .bytes = bytes,
-        },
-        .format = format,
+    return switch (format) {
+        .OBJ => try obj_parser(bytes, allocator),
     };
 }

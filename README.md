@@ -46,7 +46,6 @@ defer image.deallocate(allocator);
     format: EmberImageFormat,
     width: u32,
     height: u32,
-    data: []u8, // raw bytes of image data
     pixels: []{
         red: u8,
         green: u8,
@@ -75,7 +74,29 @@ defer sound.deallocate(allocator);
     sample_rate: u32,
     bit_depth: u16,
     data_size: usize,
-    data: []u8, // raw bytes of samples
+    samples: []u8,
+}
+```
+
+## 3d
+
+```
+const model: ember.types.Ember3d = try ember.load_3d(.OBJ, "assets/models/cube.obj", allocator);
+defer model.deallocate(allocator);
+```
+
+`ember.types.Ember3d` has the following structure:
+```
+{
+    meta: {
+        file: [:0]const u8, // filepath
+        bytes: []u8, // raw file content
+    },
+    format: Ember3dFormat,
+    vertices: []@Vector(3, f32),
+    uvs: []@Vector(2, f32),
+    normals: []@Vector(3, f32),
+    indices: []@Vector(3, u32),
 }
 ```
 

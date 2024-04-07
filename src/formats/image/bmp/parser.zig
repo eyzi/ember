@@ -38,7 +38,6 @@ pub fn parser(bytes: []u8, allocator: std.mem.Allocator) !EmberImage {
         .format = .BMP,
         .width = width,
         .height = height,
-        .data = try allocator.dupe(u8, data),
         .pixels = pixels,
     };
 }
