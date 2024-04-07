@@ -1,0 +1,12 @@
+.{
+    .name = "ember",
+    .version = "0.1.0",
+    .paths = .{
+        "assets",
+        "src",
+        "build.zig",
+        "build.zig.zon",
+        "LICENSE.md",
+        "README.md",
+    },
+}
