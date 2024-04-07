@@ -2,29 +2,25 @@ const builtin = @import("builtin");
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
-    const exe = try create_executable(b);
-    create_run_command(b, exe);
-}
-
-fn create_executable(b: *std.Build) !*std.Build.Step.Compile {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
-    const exe = b.addExecutable(.{
+
+    _ = b.addModule("ember", .{
+        .source_file = .{ .path = "src/_.zig" },
+    });
+    const lib = b.addStaticLibrary(.{
         .name = "ember",
-        .root_source_file = .{ .path = "src/main.zig" },
+        .root_source_file = .{ .path = "src/_.zig" },
         .target = target,
         .optimize = optimize,
     });
-    b.installArtifact(exe);
-    return exe;
-}
+    b.installArtifact(lib);
 
-fn create_run_command(b: *std.Build, exe: *std.Build.Step.Compile) void {
-    const run_cmd = b.addRunArtifact(exe);
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
+    const main_tests = b.addTest(.{
+        .root_source_file = .{ .path = "src/test.zig" },
+    });
+    const run_main_tests = b.addRunArtifact(main_tests);
 
-    const run_step = b.step("run", "Run app");
-    run_step.dependOn(&run_cmd.step);
+    const test_step = b.step("test", "Run library tests");
+    test_step.dependOn(&run_main_tests.step);
 }

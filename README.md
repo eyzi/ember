@@ -1,11 +1,16 @@
 # Ember
 Media Byte Reader
 
-### Idea
+### `.load_image(<image-format>, filepath, allocator)`
 
-EmberFormatSequence + EmberMeta = EmberObject
+e.g. `.load_image(.BMP, "assets/images/icon.bmp", allocator)`
 
-Each format should provide its EmberFormatSequence
-Loading a file should provide its EmberMeta
-EmberMeta parsed with EmberFormatSequence will return an EmberObject
+Supported Image Formats:
+- .BMP
 
+### `.load_sound(<sound-format>, filepath, allocator)`
+
+e.g. `.load_sound(.WAV, "assets/sounds/completion.wav", allocator)`
+
+Supported Sound Formats:
+- .WAV
