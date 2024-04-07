@@ -32,7 +32,7 @@ const ember = @import("ember");
 ## Image
 
 ```
-const image: ember.types.EmberImage = ember.load_image(.BMP, "assets/images/icon.bmp", allocator);
+const image: ember.types.EmberImage = try ember.load_image(.BMP, "assets/images/icon.bmp", allocator);
 defer image.deallocate(allocator);
 ```
 
@@ -59,7 +59,7 @@ defer image.deallocate(allocator);
 ## Sound
 
 ```
-const sound: ember.types.EmberSound = ember.load_sound(.WAV, "assets/sounds/completion.wav", allocator);
+const sound: ember.types.EmberSound = try ember.load_sound(.WAV, "assets/sounds/completion.wav", allocator);
 defer sound.deallocate(allocator);
 ```
 
@@ -82,6 +82,6 @@ defer sound.deallocate(allocator);
 ## Raw Bytes
 
 ```
-const bytes: []u8 = ember.load(filepath, allocator);
+const bytes: []u8 = try ember.load(filepath, allocator);
 defer allocator.free(bytes);
 ```
