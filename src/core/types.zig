@@ -99,6 +99,10 @@ pub const EmberMetaAttribute = union(enum) {
     usize: usize,
     bytes: []u8,
     unknown,
+
+    pub fn value(comptime self: EmberMetaAttribute) std.meta.fields(EmberMetaAttribute)[@intFromEnum(self)].type {
+        return @field(self, std.meta.fields(EmberMetaAttribute)[@intFromEnum(self)].name);
+    }
 };
 
 pub const EmberMetaAttributes = std.StringHashMap(EmberMetaAttribute);
